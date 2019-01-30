@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<title>Dweets</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+</style>
+<body class="w3-theme-l5">
+
+<!-- Navbar -->
+<div class="w3-top">
+ <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+  <a href="http://127.0.0.1:8000/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>HOME</a>
+  <a href="http://127.0.0.1:8000/logout/" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
+    LOGOUT
+  </a>
+ </div>
+</div>
+
+
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+  <!-- The Grid -->
+  <div class="w3-row">
+    <!-- Left Column -->
+    <div class="w3-col m3 fixed">
+      <!-- Profile -->
+      <div class="w3-card w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">{{ username }}</h4>
+        </div>
+      </div>
+
+    </div>
+    
+    <!-- Middle Column -->
+    <div class="w3-col m7">
+      <div class="w3-container">
+      {% for obj in dwts %}
+          {% for d in obj %}
+            <div class="w3-container w3-card w3-white w3-round w3-margin"><br> 
+              <p><b>{{d.user.username}}</b></p> 
+              <p>"{{d.content}}"</p>
+              <hr>
+              {% for c in d.comments.all %}
+              <div class="w3-card w3-round w3-white">
+                <div class="w3-container w3-padding"> 
+                <p>{{c.comment}}</p>
+              </div>
+              </div>
+                <hr>
+              {% endfor %}
+              <hr>
+              <form method="post">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <input type="number" name="dweet_id" value="{{d.id}}" hidden>
+                  <button type="submit" name="btn_comment">COMMENT</button>
+              </form>
+              <hr>
+                
+                <p>Likes: {{d.likes.count}} </p>
+              <hr>
+              <form method="post">
+                  <input type="number" name="dweet_id" value="{{d.id}}" hidden>
+                  <button type="submit" name="btn_like">LIKE</button>
+              </form>
+              <hr>
+            </div>
+          {% endfor %}
+      {% endfor %}
+      </div>
+      
+      
+    <!-- End Middle Column -->
+    </div>
+    
+    <!-- Right Column -->
+    <div class="w3-col m2 fixed">
+      <div class="w3-card w3-round w3-white w3-center">
+        <div class="w3-container">
+          <p>Upcoming Events:</p>
+          <img src="" alt="Forest" style="width:100%;">
+          <p><strong>Holiday</strong></p>
+          <p>Friday 15:00</p>
+          <p><button class="w3-button w3-block w3-theme-l4">Info</button></p>
+        </div>
+      </div>
+      <br>
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
+
+</body>
+</html> 
